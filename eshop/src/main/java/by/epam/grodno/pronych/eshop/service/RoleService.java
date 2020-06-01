@@ -11,11 +11,11 @@ import by.epam.grodno.pronych.eshop.entity.Role;
 import by.epam.grodno.pronych.eshop.entity.RoleName;
 
 @Service
+@Transactional(readOnly=true)
 public class RoleService {
     @Autowired
     private RoleDaoImpl roleDao;
 
-    @Transactional
     public List < Role > getAll() {
         return roleDao.getAll();
     }
@@ -25,17 +25,14 @@ public class RoleService {
     	roleDao.save(role);
     }
 
-    @Transactional
     public Role getById(int theId) {
         return roleDao.getById(theId);
     }
 
-    @Transactional
     public Role getByName(RoleName name) {
     	return roleDao.getByName(name);
     }
     
-    @Transactional
     public Role getByName(String name) {
     	return roleDao.getByName(name);
     }

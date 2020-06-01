@@ -5,6 +5,7 @@ import java.util.Set;
 public class SignUpForm {
     private String name;
     private String username;
+    private String login;
     private String email;
     private Set<String> role;
     private String password;
@@ -48,4 +49,15 @@ public class SignUpForm {
     public void setRole(Set<String> role) {
       this.role = role;
     }
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+    
+    
+    
 }

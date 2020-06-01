@@ -54,7 +54,7 @@ public class AuthRestApi {
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-
+		
 		String jwt = jwtProvider.generateJwtToken(authentication);
 		return ResponseEntity.ok(new JwtResponse(jwt));
 	}

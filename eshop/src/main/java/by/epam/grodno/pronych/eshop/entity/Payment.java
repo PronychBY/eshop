@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="torder")
+@Table(name="payment")
 public class Payment {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -22,11 +22,11 @@ public class Payment {
 	@Column(name="sum")
 	int sum;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "order_id")  
 	private Order order;
 	
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")  
 	private User user;
 	

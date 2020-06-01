@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,13 +26,14 @@ import by.epam.grodno.pronych.eshop.service.dts.ProductMsg;
  * Администратор может занести неплательщиков в “черный список”. moveToBlackList(user) removeFromBlackList(User)
  */
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/product")
 public class ProductController {
 	@Autowired
 	ProductService productService;
 
-	//@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 	@GetMapping("/list")
     public ResponseEntity<List<ProductMsg>> list() {
     	List < ProductMsg > listData = productService.getAllToJson();
@@ -48,6 +51,7 @@ public class ProductController {
 	//@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<?> delete(@PathVariable("id") int id) {
+		System.out.println("delete id:" +id);
 		productService.delete(id);
 		return ResponseEntity.ok().body(id);
 	}	
@@ -65,11 +69,13 @@ public class ProductController {
 	
 	//@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/update")
-    public ResponseEntity<String> update(@RequestBody ProductMsg productMsg) {
-        Product product = productService.getById(productMsg.getId());
-        productService.update(product);
+    public ResponseEntity<ProductMsg> update(@RequestBody ProductMsg productMsg) {
+        //System.out.println(productMsg);
+		//Product product = productService.getById(productMsg.getId());
+        productService.update(productMsg);
  		
-        return ResponseEntity.ok().body("Product with id="+productMsg.getId()+" updated successfully!");
+        //return ResponseEntity.ok().body("Product with id="+productMsg.getId()+" updated successfully!");
+        return ResponseEntity.ok().body(productMsg);
     }	
 	
 }

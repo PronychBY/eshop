@@ -5,12 +5,10 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 
-import by.epam.grodno.pronych.eshop.entity.Product;
+import by.epam.grodno.pronych.eshop.entity.Payment;
 
-@Repository("productDao")
-public class ProductDaoImpl implements ProductDao{
+public class PaymentDaoImpl implements PaymentDao{
     private SessionFactory sessionFactory;
 
     @Autowired
@@ -20,40 +18,41 @@ public class ProductDaoImpl implements ProductDao{
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Product> getAll() {
+    public List<Payment> getAll() {
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("from Product").list();
+        return session.createQuery("from Payment").list();
     }
 
     @Override
-    public void save(Product product) {
+    public void save(Payment payment) {
         Session session = sessionFactory.getCurrentSession();
-        session.persist(product);
+        session.persist(payment);
     }
 
     @Override
-    public void delete(Product product) {
+    public void delete(Payment payment) {
         Session session = sessionFactory.getCurrentSession();
-        session.delete(product);
+        session.delete(payment);
     }
 
     @Override
     public void delete(int id) {
         Session session = sessionFactory.getCurrentSession();
-        Product product = session.get(Product.class, id);
+        Payment product = session.get(Payment.class, id);
         session.delete(product);
     }
 
     @Override
-    public void update(Product product) {
+    public void update(Payment payment) {
         Session session = sessionFactory.getCurrentSession();
-        session.saveOrUpdate(product);
-        System.out.println("p:"+product+" sucessfully updated");
+        session.saveOrUpdate(payment);
+        System.out.println("p:"+payment+" sucessfully updated");
     }
 
     @Override
-    public Product getById(int id) {
+    public Payment getById(int id) {
         Session session = sessionFactory.getCurrentSession();
-        return session.get(Product.class, id);
+        return session.get(Payment.class, id);
     }	
+
 }

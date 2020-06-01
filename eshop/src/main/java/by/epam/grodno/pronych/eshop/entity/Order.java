@@ -4,6 +4,7 @@ package by.epam.grodno.pronych.eshop.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import by.epam.grodno.pronych.eshop.service.dts.OrderMsg;
+import by.epam.grodno.pronych.eshop.service.dts.ProductMsg;
 
 @Entity
 @Table(name="orders")
@@ -28,15 +30,18 @@ public class Order {
 	String name;
 	@Column(name="sum")
 	int sum;
+	
+	String address;
+	String phone;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")  
 	private User user;
     
-	@OneToMany(mappedBy = "order")
+	@OneToMany(mappedBy = "order", cascade=CascadeType.ALL)
 	private Set<Torder> torders = new HashSet<Torder>();
 	
-	@OneToMany(mappedBy = "order")
+	@OneToMany(mappedBy = "order", cascade=CascadeType.ALL)
 	private Set<Payment> payments = new HashSet<Payment>();
 
 	public Order() {
@@ -53,6 +58,17 @@ public class Order {
 
 	public Order(OrderMsg orderMsg) {
 		this.name = orderMsg.getName();
+		this.user = orderMsg.getUser();
+		//this.address = orderMsg.getAddress();
+		//this.phone = orderMsg.getPhone();
+		
+		//for (ProductMsg productMsg : orderMsg.getProducts()) {
+		//	Torder torder = new Torder();
+		//	torder.setProduct(new Product(productMsg));
+		//	this.torders.add(torder);
+		//}		
+		
+		//
 	}
 
 	public int getId() {
@@ -101,6 +117,71 @@ public class Order {
 
 	public void setPayments(Set<Payment> payments) {
 		this.payments = payments;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	@Override
+	public String toString() {
+		return "Order [id=" + id + ", name=" + name + ", sum=" + sum + ", address=" + address + ", phone=" + phone
+				+ ", user=" + user + ", torders=" + torders + ", payments=" + payments + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((address == null) ? 0 : address.hashCode());
+		result = prime * result + id;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((phone == null) ? 0 : phone.hashCode());
+		result = prime * result + sum;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Order other = (Order) obj;
+		if (address == null) {
+			if (other.address != null)
+				return false;
+		} else if (!address.equals(other.address))
+			return false;
+		if (id != other.id)
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (phone == null) {
+			if (other.phone != null)
+				return false;
+		} else if (!phone.equals(other.phone))
+			return false;
+		if (sum != other.sum)
+			return false;
+		return true;
 	}
 	
 }

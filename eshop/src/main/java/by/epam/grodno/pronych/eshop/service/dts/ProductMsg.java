@@ -23,6 +23,7 @@ public class ProductMsg {
 	public ProductMsg(Product product) {
 		this.id = product.getId();
 		this.name = product.getName();
+		this.price = product.getPrice();
 	}
 
 	public int getId() {
@@ -46,5 +47,11 @@ public class ProductMsg {
 	public void setPrice(int price) {
 		this.price = price;
 	}
+	@Override
+	public String toString() {
+		return "ProductMsg [id=" + id + ", name=" + name + ", price=" + price + "]";
+	}
 
+	
+	
 }

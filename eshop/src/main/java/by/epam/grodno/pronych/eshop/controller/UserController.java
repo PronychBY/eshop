@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import by.epam.grodno.pronych.eshop.entity.User;
 import by.epam.grodno.pronych.eshop.service.UserService;
+import by.epam.grodno.pronych.eshop.service.dts.UserMsg;
 
 @CrossOrigin("*")
 @RestController
@@ -28,9 +29,22 @@ public class UserController {
         return ResponseEntity.ok().body(theUsers);
     }
     
+    @GetMapping("/depts")
+    public ResponseEntity<List<UserMsg>> depts() {
+    	List < UserMsg > theUsers = userService.getAllDebts();
+        return ResponseEntity.ok().body(theUsers);
+    }
+    
 	@RequestMapping("/user/{id}")
 	public ResponseEntity<User> get(@PathVariable("id") int id) {
 		User user = userService.getById(id);		
+		return ResponseEntity.ok().body(user); 
+	}
+	
+		
+	@RequestMapping("/getbyname")
+	public ResponseEntity<User> getByName(@RequestBody User userMSG) {
+		User user = userService.getByUserName(userMSG.getName());		
 		return ResponseEntity.ok().body(user); 
 	}
 	
@@ -41,7 +55,8 @@ public class UserController {
 	}
 	    
 	@RequestMapping("/isadmin")
-	public ResponseEntity<?> isUserAdmin(@RequestBody User user) {
+	public ResponseEntity<?> isUserAdmin(@RequestBody User userMSG) {
+		User user = userService.getByUserName(userMSG.getUsername());
 		return ResponseEntity.ok().body(userService.isUserAdmin(user)); 
 	}
 }

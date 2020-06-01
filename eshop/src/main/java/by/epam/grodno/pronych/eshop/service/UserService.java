@@ -1,17 +1,20 @@
 package by.epam.grodno.pronych.eshop.service;
 
 import java.util.List;
+import java.util.Set;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import by.epam.grodno.pronych.eshop.dao.UserDao;
+import by.epam.grodno.pronych.eshop.entity.Role;
 import by.epam.grodno.pronych.eshop.entity.User;
+import by.epam.grodno.pronych.eshop.service.dts.UserMsg;
 
-@Component("userService")
-@Transactional
+@Service("userService")
+@Transactional(readOnly=true)
 public class UserService {
 	private final UserDao dao;
 	
@@ -19,18 +22,24 @@ public class UserService {
 	RoleService roleService;
 	
 	@Autowired
+	OrderService orderService;
+	
+	@Autowired
 	public UserService(UserDao dao) {
 		this.dao = dao;
 	}
 	
+    @Transactional
 	public void save(User user) {
         dao.save(user);
     }
 	
+    @Transactional
 	public void update(User user) {
         dao.update(user);
     }
     
+    @Transactional
     public void delete(int id) {
         dao.delete(id);
     }
@@ -45,13 +54,25 @@ public class UserService {
         return user;
     }
     
+    public User getByUserName(String userName) {
+		User user = dao.getByUserName(userName);
+        return user;
+    }
+    
     public List<User> getAll() {
-    	List<User> users = dao.getAll();
-        return users;
+    	return dao.getAll();
+    }
+    
+    public List<UserMsg> getAllDebts() {
+    	return orderService.getAllDebts();
     }
 
     public boolean isUserAdmin(User user) {
-    	return user.getRoles().contains(roleService.getByName("ROLE_ADMIN"));
+    	//RoleName roleName = RoleName.ROLE_ADMIN;//.valueOf(enumType, name)
+    	Role role = roleService.getByName("ROLE_ADMIN");
+    	//Role role = roleService.getByName(RoleName.ROLE_ADMIN);
+    	Set<Role> roles = user.getRoles();
+    	return roles.contains(role);//user.getRoles().contains(role);
     }
     
     

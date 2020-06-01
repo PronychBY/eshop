@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ import by.epam.grodno.pronych.eshop.service.dts.OrderMsg;
  * Администратор может занести неплательщиков в “черный список”. moveToBlackList(user) removeFromBlackList(User)
  */
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/order")
 public class OrderController {
@@ -55,8 +57,9 @@ public class OrderController {
 	//@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/add")
     public ResponseEntity<OrderMsg> add(@RequestBody OrderMsg orderMsg) {
-		Order order = new Order(orderMsg);
-        orderService.save(order);
+		//System.out.println(orderMsg);
+		//Order order = new Order(orderMsg);
+        orderService.save(orderMsg);
         
         //return ResponseEntity.ok().body("Product with id="+newId+" added successfully!");
         //return new ResponseEntity<>("Hello World!", HttpStatus.OK);

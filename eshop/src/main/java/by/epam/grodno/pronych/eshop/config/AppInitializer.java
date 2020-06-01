@@ -4,7 +4,6 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 import by.epam.grodno.pronych.eshop.security.WebSecurityConfig;
 
-//import com.senla.pronych.hibernate.security.WebSecurityConfig;
 
 public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 

@@ -35,6 +35,54 @@ public class Torder {
     @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id")  
 	private Product product;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
+	public int getSum() {
+		return sum;
+	}
+
+	public void setSum(int sum) {
+		this.sum = sum;
+	}
+
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
     
     /*@ManyToMany(mappedBy = "torders")    
     private Set<Product> products = new HashSet<Product>();

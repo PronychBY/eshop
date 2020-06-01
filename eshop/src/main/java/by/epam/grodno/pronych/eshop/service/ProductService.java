@@ -3,10 +3,10 @@ package by.epam.grodno.pronych.eshop.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import by.epam.grodno.pronych.eshop.dao.ProductDao;
 import by.epam.grodno.pronych.eshop.entity.Product;
@@ -14,8 +14,8 @@ import by.epam.grodno.pronych.eshop.service.dts.ProductMsg;
 
 
 
-@Component("productService")
-@Transactional
+@Service("productService")
+@Transactional(readOnly=true)
 public class ProductService {
 	private final ProductDao dao;
 	
@@ -24,18 +24,25 @@ public class ProductService {
 		this.dao = dao;
 	}
 	
+	@Transactional
     public void save(Product product) {
     	dao.save(product);
     }
 
-    public void update(Product product) {
+	@Transactional
+    public void update(ProductMsg productMsg) {
+    	Product product = getById(productMsg.getId());
+    	product.setName(productMsg.getName());
+    	product.setPrice(productMsg.getPrice());
     	dao.update(product);
     }
 
+	@Transactional
     public void delete(Product product) {
         dao.delete(product);
     }
 
+	@Transactional
     public void delete(int id) {
         dao.delete(id);
     }
