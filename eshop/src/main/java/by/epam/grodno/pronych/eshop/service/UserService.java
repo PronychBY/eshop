@@ -74,6 +74,23 @@ public class UserService {
     	Set<Role> roles = user.getRoles();
     	return roles.contains(role);//user.getRoles().contains(role);
     }
-    
+
+	public void setToBlackList(UserMsg userMsg) {
+		User user = getById((int)userMsg.getId());
+		user.setInBlackList(true);
+		update(user);
+	}
+
+	public void removeFromBlackList(UserMsg userMsg) {
+		User user = getById((int)userMsg.getId());
+		user.setInBlackList(false);
+		update(user);
+		
+	}
+
+	public boolean isUserInBlackList(UserMsg userMsg) {
+		User user = getById((int)userMsg.getId());
+		return user.isInBlackList();
+	}
     
 }

@@ -59,5 +59,21 @@ public class UserController {
 		User user = userService.getByUserName(userMSG.getUsername());
 		return ResponseEntity.ok().body(userService.isUserAdmin(user)); 
 	}
+
+	@RequestMapping("/setToBlackList")
+	public ResponseEntity<?> setToBlackList(@RequestBody UserMsg userMSG) {
+		userService.setToBlackList(userMSG);
+		return ResponseEntity.ok().body("ok"); 
+	}
+
+	@RequestMapping("/removeFromBlackList")
+	public ResponseEntity<?> removeFromBlackList(@RequestBody UserMsg userMSG) {
+		userService.removeFromBlackList(userMSG);
+		return ResponseEntity.ok().body("ok"); 
+	}
+
+	public boolean isUserInBlackList(UserMsg userMsg) {
+		return userService.isUserInBlackList(userMsg);
+	}
 }
 

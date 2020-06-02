@@ -25,8 +25,8 @@ public class ProductService {
 	}
 	
 	@Transactional
-    public void save(Product product) {
-    	dao.save(product);
+    public int save(Product product) {
+    	return dao.save(product);
     }
 
 	@Transactional

@@ -58,13 +58,13 @@ public class ProductController {
     
 	//@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/add")
-    public ResponseEntity<ProductMsg> add(@RequestBody ProductMsg productMsg) {
+    public ResponseEntity<Integer> add(@RequestBody ProductMsg productMsg) {
         Product product = new Product(productMsg);
-        productService.save(product);
+        int id = productService.save(product);
         
         //return ResponseEntity.ok().body("Product with id="+newId+" added successfully!");
         //return new ResponseEntity<>("Hello World!", HttpStatus.OK);
-        return ResponseEntity.ok().body(productMsg);
+        return ResponseEntity.ok().body(id);
     }	
 	
 	//@PreAuthorize("hasRole('ROLE_ADMIN')")
