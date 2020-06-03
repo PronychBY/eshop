@@ -72,6 +72,11 @@ public class UserController {
 		return ResponseEntity.ok().body("ok"); 
 	}
 
+	@RequestMapping("/isUserBlocked")
+	public ResponseEntity<?> isUserBlocked(@RequestBody UserMsg userMsg) {
+		return ResponseEntity.ok().body(isUserInBlackList(userMsg)); 
+	}
+	
 	public boolean isUserInBlackList(UserMsg userMsg) {
 		return userService.isUserInBlackList(userMsg);
 	}

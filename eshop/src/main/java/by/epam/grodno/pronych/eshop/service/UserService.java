@@ -75,12 +75,15 @@ public class UserService {
     	return roles.contains(role);//user.getRoles().contains(role);
     }
 
+    @Transactional
 	public void setToBlackList(UserMsg userMsg) {
 		User user = getById((int)userMsg.getId());
 		user.setInBlackList(true);
+		user.setName("test15");
 		update(user);
 	}
 
+    @Transactional
 	public void removeFromBlackList(UserMsg userMsg) {
 		User user = getById((int)userMsg.getId());
 		user.setInBlackList(false);
