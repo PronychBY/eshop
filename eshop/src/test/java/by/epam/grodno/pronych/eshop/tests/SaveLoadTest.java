@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import by.epam.grodno.pronych.eshop.controller.ProductController;
 import by.epam.grodno.pronych.eshop.controller.UserController;
-import by.epam.grodno.pronych.eshop.service.dts.ProductMsg;
-import by.epam.grodno.pronych.eshop.service.dts.UserMsg;
+import by.epam.grodno.pronych.eshop.model.dto.ProductDto;
+import by.epam.grodno.pronych.eshop.model.dto.UserDto;
 import by.epam.grodno.pronych.eshop.tests.config.TestBeanConfig;
 
 import org.junit.runner.RunWith;
@@ -33,10 +33,10 @@ public class SaveLoadTest {
 	private UserController userController;
 
 	int newId = 0;
-	ProductMsg productMsg;
+	ProductDto productMsg;
 	@Before
 	public void testBT() {
-		productMsg = new ProductMsg();
+		productMsg = new ProductDto();
 		productMsg.setName("TestProduct");
 		productMsg.setPrice(22);
 		ResponseEntity<Integer> reId =  productController.add(productMsg);
@@ -62,7 +62,7 @@ public class SaveLoadTest {
 	
 	@Test
 	public void testSetToBlackList() {
-		UserMsg userMsg = new UserMsg();
+		UserDto userMsg = new UserDto();
 		userMsg.setId(1);
 		userController.setToBlackList(userMsg);
 		

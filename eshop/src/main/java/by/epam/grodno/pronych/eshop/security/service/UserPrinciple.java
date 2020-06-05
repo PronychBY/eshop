@@ -1,7 +1,8 @@
 package by.epam.grodno.pronych.eshop.security.service;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import by.epam.grodno.pronych.eshop.entity.User;
+
+import by.epam.grodno.pronych.eshop.model.entity.User;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

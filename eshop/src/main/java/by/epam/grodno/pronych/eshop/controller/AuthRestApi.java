@@ -16,17 +16,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import by.epam.grodno.pronych.eshop.entity.Role;
-import by.epam.grodno.pronych.eshop.entity.RoleName;
-import by.epam.grodno.pronych.eshop.entity.User;
-
-import by.epam.grodno.pronych.eshop.message.JwtResponse;
-import by.epam.grodno.pronych.eshop.message.LoginForm;
-import by.epam.grodno.pronych.eshop.message.SignUpForm;
-
+import by.epam.grodno.pronych.eshop.model.dto.JwtResponseDto;
+import by.epam.grodno.pronych.eshop.model.dto.LoginFormDto;
+import by.epam.grodno.pronych.eshop.model.dto.SignUpFormDto;
+import by.epam.grodno.pronych.eshop.model.entity.Role;
+import by.epam.grodno.pronych.eshop.model.entity.RoleName;
+import by.epam.grodno.pronych.eshop.model.entity.User;
+import by.epam.grodno.pronych.eshop.model.service.impl.RoleServiceImpl;
+import by.epam.grodno.pronych.eshop.model.service.impl.UserServiceImpl;
 import by.epam.grodno.pronych.eshop.security.jwt.JwtProvider;
-import by.epam.grodno.pronych.eshop.service.RoleService;
-import by.epam.grodno.pronych.eshop.service.UserService;
 
 @CrossOrigin("*")
 @RestController
@@ -36,10 +34,10 @@ public class AuthRestApi {
 	AuthenticationManager authenticationManager;
 
 	@Autowired
-	UserService userService;
+	UserServiceImpl userService;
 
 	@Autowired
-	RoleService roleService;
+	RoleServiceImpl roleService;
 
 	@Autowired
 	PasswordEncoder encoder;
@@ -48,7 +46,7 @@ public class AuthRestApi {
 	JwtProvider jwtProvider;
 
 	@PostMapping("/signin")
-	public ResponseEntity<?> authenticateUser(@RequestBody LoginForm loginRequest) {
+	public ResponseEntity<?> authenticateUser(@RequestBody LoginFormDto loginRequest) {
 
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -56,16 +54,16 @@ public class AuthRestApi {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		
 		String jwt = jwtProvider.generateJwtToken(authentication);
-		return ResponseEntity.ok(new JwtResponse(jwt));
+		return ResponseEntity.ok(new JwtResponseDto(jwt));
 	}
 	
 	@RequestMapping("/test")
-	public ResponseEntity<String> testUser(@RequestBody SignUpForm signUpRequest) {
+	public ResponseEntity<String> testUser(@RequestBody SignUpFormDto signUpRequest) {
 		return ResponseEntity.ok().body("User registered successfully!");
 	}
 	
 	@PostMapping("/signup")
-	public ResponseEntity<String> registerUser(@RequestBody SignUpForm signUpRequest) {
+	public ResponseEntity<String> registerUser(@RequestBody SignUpFormDto signUpRequest) {
 
 		/*
 		 * if(userDao.existsByUsername(signUpRequest.getUsername())) { return new

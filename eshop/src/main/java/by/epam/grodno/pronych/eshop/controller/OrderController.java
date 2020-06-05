@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import by.epam.grodno.pronych.eshop.entity.Order;
-import by.epam.grodno.pronych.eshop.service.OrderService;
-import by.epam.grodno.pronych.eshop.service.dts.OrderMsg;
+import by.epam.grodno.pronych.eshop.model.dto.OrderDto;
+import by.epam.grodno.pronych.eshop.model.entity.Order;
+import by.epam.grodno.pronych.eshop.model.service.impl.OrderServiceImpl;
 
 /*
  * Система Интернет-магазин. 
@@ -30,12 +30,12 @@ import by.epam.grodno.pronych.eshop.service.dts.OrderMsg;
 @RequestMapping("/order")
 public class OrderController {
 	@Autowired
-	OrderService orderService;
+	OrderServiceImpl orderService;
 
 	//@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 	@GetMapping("/list")
-    public ResponseEntity<List<OrderMsg>> list() {
-    	List < OrderMsg > listData = orderService.getAllToJson();
+    public ResponseEntity<List<OrderDto>> list() {
+    	List < OrderDto > listData = orderService.getAllToJson();
         //return ResponseEntity.ok().header("Access-Control-Allow-Origin", "*").body(listData);
         return ResponseEntity.ok().body(listData);
     }
@@ -43,7 +43,7 @@ public class OrderController {
 	//@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 	@GetMapping("/get/{id}")
 	public ResponseEntity<?> get(@PathVariable("id") int id) {
-		OrderMsg orderMsg = orderService.getByIdToJson(id);		
+		OrderDto orderMsg = orderService.getByIdToJson(id);		
     	return ResponseEntity.ok().body(orderMsg);
 	}	
 	
@@ -56,7 +56,7 @@ public class OrderController {
     
 	//@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/add")
-    public ResponseEntity<OrderMsg> add(@RequestBody OrderMsg orderMsg) {
+    public ResponseEntity<OrderDto> add(@RequestBody OrderDto orderMsg) {
 		//System.out.println(orderMsg);
 		//Order order = new Order(orderMsg);
         orderService.save(orderMsg);
@@ -68,7 +68,7 @@ public class OrderController {
 	
 	//@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/update")
-    public ResponseEntity<String> update(@RequestBody OrderMsg orderMsg) {
+    public ResponseEntity<String> update(@RequestBody OrderDto orderMsg) {
 		Order order = orderService.getById(orderMsg.getId());
         orderService.update(order);
  		

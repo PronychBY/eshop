@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import by.epam.grodno.pronych.eshop.dao.UserDao;
-import by.epam.grodno.pronych.eshop.entity.User;
+import by.epam.grodno.pronych.eshop.model.dao.UserDao;
+import by.epam.grodno.pronych.eshop.model.entity.User;
  
 @Service //("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {

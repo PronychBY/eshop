@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import by.epam.grodno.pronych.eshop.entity.User;
-import by.epam.grodno.pronych.eshop.service.UserService;
-import by.epam.grodno.pronych.eshop.service.dts.UserMsg;
+import by.epam.grodno.pronych.eshop.model.dto.UserDto;
+import by.epam.grodno.pronych.eshop.model.entity.User;
+import by.epam.grodno.pronych.eshop.model.service.impl.UserServiceImpl;
 
 @CrossOrigin("*")
 @RestController
@@ -21,7 +21,7 @@ import by.epam.grodno.pronych.eshop.service.dts.UserMsg;
 public class UserController {
 
 	@Autowired
-	private UserService userService;
+	private UserServiceImpl userService;
 
     @GetMapping("/list")
     public ResponseEntity<List<User>> list() {
@@ -30,8 +30,8 @@ public class UserController {
     }
     
     @GetMapping("/depts")
-    public ResponseEntity<List<UserMsg>> depts() {
-    	List < UserMsg > theUsers = userService.getAllDebts();
+    public ResponseEntity<List<UserDto>> depts() {
+    	List < UserDto > theUsers = userService.getAllDebts();
         return ResponseEntity.ok().body(theUsers);
     }
     
@@ -61,23 +61,23 @@ public class UserController {
 	}
 
 	@RequestMapping("/setToBlackList")
-	public ResponseEntity<?> setToBlackList(@RequestBody UserMsg userMSG) {
+	public ResponseEntity<?> setToBlackList(@RequestBody UserDto userMSG) {
 		userService.setToBlackList(userMSG);
 		return ResponseEntity.ok().body("ok"); 
 	}
 
 	@RequestMapping("/removeFromBlackList")
-	public ResponseEntity<?> removeFromBlackList(@RequestBody UserMsg userMSG) {
+	public ResponseEntity<?> removeFromBlackList(@RequestBody UserDto userMSG) {
 		userService.removeFromBlackList(userMSG);
 		return ResponseEntity.ok().body("ok"); 
 	}
 
 	@RequestMapping("/isUserBlocked")
-	public ResponseEntity<?> isUserBlocked(@RequestBody UserMsg userMsg) {
+	public ResponseEntity<?> isUserBlocked(@RequestBody UserDto userMsg) {
 		return ResponseEntity.ok().body(isUserInBlackList(userMsg)); 
 	}
 	
-	public boolean isUserInBlackList(UserMsg userMsg) {
+	public boolean isUserInBlackList(UserDto userMsg) {
 		return userService.isUserInBlackList(userMsg);
 	}
 }
