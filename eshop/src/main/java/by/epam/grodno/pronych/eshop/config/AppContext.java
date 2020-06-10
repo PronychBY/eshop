@@ -29,7 +29,7 @@ public class AppContext {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
         sessionFactory.setPackagesToScan(new String[] {
-            "by.epam.grodno.pronych.eshop.entity"
+            "by.epam.grodno.pronych.eshop.model.entity"
         });
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;

@@ -17,38 +17,34 @@ import org.springframework.web.bind.annotation.RestController;
 
 import by.epam.grodno.pronych.eshop.model.dto.ProductDto;
 import by.epam.grodno.pronych.eshop.model.entity.Product;
-import by.epam.grodno.pronych.eshop.model.service.impl.ProductServiceImpl;
-
-/*
- * Система Интернет-магазин. 
- * Администратор осуществляет ведение каталога Товаров. add update delete getall getbyid
- * Клиент делает и оплачивает Заказ на Товары. addorder updateorder deleteorder getbyid getbyuser 
- * Администратор может занести неплательщиков в “черный список”. moveToBlackList(user) removeFromBlackList(User)
- */
+import by.epam.grodno.pronych.eshop.model.service.ProductService;
 
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/product")
 public class ProductController {
-	@Autowired
-	ProductServiceImpl productService;
+	private ProductService productService;
 
+	@Autowired
+	ProductController(ProductService productService){
+		this.productService = productService;
+	}
+	
 	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 	@GetMapping("/list")
     public ResponseEntity<List<ProductDto>> list() {
     	List < ProductDto > listData = productService.getAllToJson();
-        //return ResponseEntity.ok().header("Access-Control-Allow-Origin", "*").body(listData);
         return ResponseEntity.ok().body(listData);
     }
 	
-	//@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
 	@GetMapping("/get/{id}")
 	public ResponseEntity<?> get(@PathVariable("id") int id) {
 		ProductDto productMsg = productService.getByIdToJson(id);		
     	return ResponseEntity.ok().body(productMsg);
 	}	
 	
-	//@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<?> delete(@PathVariable("id") int id) {
 		System.out.println("delete id:" +id);
@@ -56,25 +52,18 @@ public class ProductController {
 		return ResponseEntity.ok().body(id);
 	}	
     
-	//@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/add")
     public ResponseEntity<Integer> add(@RequestBody ProductDto productMsg) {
         Product product = new Product(productMsg);
         int id = productService.save(product);
-        
-        //return ResponseEntity.ok().body("Product with id="+newId+" added successfully!");
-        //return new ResponseEntity<>("Hello World!", HttpStatus.OK);
         return ResponseEntity.ok().body(id);
     }	
 	
-	//@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/update")
     public ResponseEntity<ProductDto> update(@RequestBody ProductDto productMsg) {
-        //System.out.println(productMsg);
-		//Product product = productService.getById(productMsg.getId());
         productService.update(productMsg);
- 		
-        //return ResponseEntity.ok().body("Product with id="+productMsg.getId()+" updated successfully!");
         return ResponseEntity.ok().body(productMsg);
     }	
 	

@@ -5,24 +5,14 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import by.epam.grodno.pronych.eshop.model.dto.ProductDto;
 
-/*
- * Система Интернет-магазин. 
- * Администратор осуществляет ведение каталога Товаров. 
- * Клиент делает и оплачивает Заказ на Товары. 
- * Администратор может занести неплательщиков в “черный список”.
- */
 @Entity
 @Table(name = "product")
 public class Product {
@@ -37,8 +27,11 @@ public class Product {
 	@Column(name = "price")
 	int price;
 
+	@OneToMany(mappedBy = "product")
+	private Set<Torder> torders = new HashSet<Torder>();
+
 	public Product() {
-	
+
 	}
 
 	public Product(int id, String name) {
@@ -53,7 +46,7 @@ public class Product {
 	}
 
 	public Product(ProductDto productMsg) {
-		
+
 		this.id = productMsg.getId();
 		this.name = productMsg.getName();
 		this.price = productMsg.getPrice();
@@ -127,11 +120,5 @@ public class Product {
 		return "Product [id=" + id + ", name=" + name + ", price=" + price + ", torders=" + torders + "]";
 	}
 
-	@OneToMany(mappedBy = "product")
-	private Set<Torder> torders = new HashSet<Torder>();
-	
-	/*@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "product_torder", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "torder_id"))
-	private Set<Torder> torders = new HashSet<Torder>();
-	*/
+
 }

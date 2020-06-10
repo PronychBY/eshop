@@ -59,16 +59,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 	   
-		/*http
-        .authorizeRequests(authorizeRequests ->
-            authorizeRequests
-                .anyRequest().authenticated()
-        )
-        .httpBasic();*/
-		
 		http.cors().and().csrf().disable()
 		.authorizeRequests().antMatchers("/api/auth/**").permitAll()
-		.antMatchers("/api/test/pm").hasRole("")
 		.antMatchers("/order/**").permitAll()
 		.antMatchers("/user/**").permitAll()
 		.antMatchers("/product/**").permitAll()
@@ -81,33 +73,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         		
-		
-		 
-		/*http
-		 .sessionManagement()
-         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-         .and()
-         .httpBasic()
-         .and()
-         .csrf()
-         .disable();*/		
-		
-		//.authorizeRequests().antMatchers("/**").hasRole("ADMIN")        //.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-        //.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		
-		/*http.cors().and().csrf().disable()
-	           //.authorizeRequests().antMatchers("/api/auth/**").permitAll()
-	           //.and()
-	           .authorizeRequests().antMatchers("/api/test/user/**").hasRole("ADMIN")
-	           .and()
-	           .authorizeRequests().antMatchers("/api/test/pm/**").hasRole("PM")
-	           .and()
-	           .authorizeRequests().anyRequest().authenticated()
-	           .and()
-	           .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-	           .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);*/
-	        
-	   http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
 
 }

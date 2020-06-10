@@ -7,23 +7,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import by.epam.grodno.pronych.eshop.model.dao.OrderDao;
 import by.epam.grodno.pronych.eshop.model.dao.PaymentDao;
+import by.epam.grodno.pronych.eshop.model.dao.UserDao;
 import by.epam.grodno.pronych.eshop.model.dto.PaymentDto;
 import by.epam.grodno.pronych.eshop.model.entity.Payment;
+import by.epam.grodno.pronych.eshop.model.service.PaymentService;
 
 @Service("paymentService")
 @Transactional(readOnly=true)
-public class PaymentServiceImpl {
+public class PaymentServiceImpl implements PaymentService{
 	private final PaymentDao dao;
+	private final UserDao userDao;
+	private final OrderDao orderDao;
 	
 	@Autowired
-	public PaymentServiceImpl(PaymentDao dao) {
+	public PaymentServiceImpl(PaymentDao dao, UserDao userDao, OrderDao orderDao) {
 		this.dao = dao;
+		this.userDao = userDao;
+		this.orderDao = orderDao;
 	}
 	
 	@Transactional
-    public int save(Payment payment) {
-    	return dao.save(payment);
+    public int save(PaymentDto paymentDto) {
+		Payment payment = new Payment(paymentDto);
+		payment.setUser(userDao.getById(paymentDto.getUserId()));
+		payment.setOrder(orderDao.getById(paymentDto.getOrderId()));
+		return dao.save(payment);
     }
 
 	@Transactional

@@ -11,11 +11,12 @@ public interface UserService {
     public void delete(int id);
     public User getById(int id);
     public User getByName(String name);
-    public User getByUserName(String userName);
+    public UserDto getByUserName(String userName);
     public List<User> getAll();
-    public List<UserDto> getAllDebts();
+    public List<UserDto> getAllUserDebts();
     public boolean isUserAdmin(User user); 
 	public void setToBlackList(UserDto userMsg);
 	public void removeFromBlackList(UserDto userMsg);
 	public boolean isUserInBlackList(UserDto userMsg);
+    public void setBeanOrderService(OrderService orderService);
 }

@@ -5,10 +5,12 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import by.epam.grodno.pronych.eshop.model.dao.PaymentDao;
 import by.epam.grodno.pronych.eshop.model.entity.Payment;
 
+@Repository("paymentDao")
 public class PaymentDaoImpl implements PaymentDao{
     private SessionFactory sessionFactory;
 

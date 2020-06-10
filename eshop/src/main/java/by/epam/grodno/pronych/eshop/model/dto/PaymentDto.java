@@ -2,13 +2,15 @@ package by.epam.grodno.pronych.eshop.model.dto;
 
 import by.epam.grodno.pronych.eshop.model.entity.Order;
 import by.epam.grodno.pronych.eshop.model.entity.Payment;
-import by.epam.grodno.pronych.eshop.model.entity.Product;
 import by.epam.grodno.pronych.eshop.model.entity.User;
 
 public class PaymentDto {
 	int id;
 	String name;
 	int sum;
+	int orderId;
+	int userId;
+	
 	Order order;
 	User user;
 	
@@ -30,11 +32,9 @@ public class PaymentDto {
 		this.sum = payment.getSum();
 		this.user = payment.getUser();
 		this.order = payment.getOrder();
+		this.userId = (int)payment.getUser().getId();
+		this.orderId = payment.getOrder().getId();
 	}
-	
-	
-	
-	
 	
 	public int getId() {
 		return id;
@@ -65,6 +65,23 @@ public class PaymentDto {
 	}
 	public void setUser(User user) {
 		this.user = user;
+	}
+	public int getOrderId() {
+		return orderId;
+	}
+	public void setOrderId(int orderId) {
+		this.orderId = orderId;
+	}
+	public int getUserId() {
+		return userId;
+	}
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+	@Override
+	public String toString() {
+		return "PaymentDto [id=" + id + ", name=" + name + ", sum=" + sum + ", orderId=" + orderId + ", userId="
+				+ userId + ", order=" + order + ", user=" + user + "]";
 	}
 	
 	

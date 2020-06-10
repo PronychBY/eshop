@@ -11,7 +11,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import by.epam.grodno.pronych.eshop.model.dto.PaymentDto;
-import by.epam.grodno.pronych.eshop.model.dto.ProductDto;
 
 @Entity
 @Table(name="payment")

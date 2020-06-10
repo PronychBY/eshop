@@ -16,5 +16,7 @@ public interface OrderService {
     public List<OrderDto> getAllToJson();
     public OrderDto getByIdToJson(int id);
     public int getSumOfOrder(User user);
-    public List<UserDto> getAllDebts();	
+    
+    public List<UserDto> getAllUserDebts();	
+    public List<OrderDto> getAllOrdersDebts();	
 }

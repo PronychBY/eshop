@@ -9,10 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 import by.epam.grodno.pronych.eshop.model.dao.RoleDao;
 import by.epam.grodno.pronych.eshop.model.entity.Role;
 import by.epam.grodno.pronych.eshop.model.entity.RoleName;
+import by.epam.grodno.pronych.eshop.model.service.RoleService;
 
-@Service
+@Service("roleService")
 @Transactional(readOnly=true)
-public class RoleServiceImpl {
+public class RoleServiceImpl implements RoleService{
     private RoleDao roleDao;
 
     @Autowired

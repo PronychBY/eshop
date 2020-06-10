@@ -16,9 +16,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import by.epam.grodno.pronych.eshop.model.dto.OrderDto;
-import by.epam.grodno.pronych.eshop.model.dto.ProductDto;
-
 @Entity
 @Table(name="orders")
 public class Order {
@@ -54,21 +51,6 @@ public class Order {
 		this.user = user;
 		this.torders = torders;
 		this.payments = payments;
-	}
-
-	public Order(OrderDto orderMsg) {
-		this.name = orderMsg.getName();
-		this.user = orderMsg.getUser();
-		//this.address = orderMsg.getAddress();
-		//this.phone = orderMsg.getPhone();
-		
-		//for (ProductMsg productMsg : orderMsg.getProducts()) {
-		//	Torder torder = new Torder();
-		//	torder.setProduct(new Product(productMsg));
-		//	this.torders.add(torder);
-		//}		
-		
-		//
 	}
 
 	public int getId() {

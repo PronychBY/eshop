@@ -19,8 +19,8 @@ public class JwtProvider {
     @Value("by.epam.grodno.pronych.eshop")
     private String jwtSecret = "by.epam.grodno.pronych.eshop";
  
-    @Value("864000")
-    private int jwtExpiration=864000;
+    @Value("8640000")
+    private int jwtExpiration=8640000;
  
     public String generateJwtToken(Authentication authentication) {
  

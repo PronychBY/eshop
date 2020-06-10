@@ -68,7 +68,7 @@ public class UserDaoImpl implements UserDao{
     	user.setInBlackList(false);
     }
     
-	public User getByUserName(String name) {
+    public User getByUserName(String name) {
 		Query q = sessionFactory.getCurrentSession().createQuery("from User as u where u.username = :name");
         q.setParameter("name", name);
     	return (User)q.uniqueResult();

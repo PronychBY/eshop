@@ -8,6 +8,7 @@ public class UserDto {
 	private int sumOfOrders;
 	private int payments;
 	private boolean isInBlackList;
+	private boolean isAdmin;
 	
 	public UserDto() {
 	}
@@ -61,6 +62,14 @@ public class UserDto {
 
 	public void setPayments(int payments) {
 		this.payments = payments;
+	}
+
+	public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
 	}
 
 	@Override

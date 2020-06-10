@@ -22,28 +22,29 @@ import by.epam.grodno.pronych.eshop.model.dto.SignUpFormDto;
 import by.epam.grodno.pronych.eshop.model.entity.Role;
 import by.epam.grodno.pronych.eshop.model.entity.RoleName;
 import by.epam.grodno.pronych.eshop.model.entity.User;
-import by.epam.grodno.pronych.eshop.model.service.impl.RoleServiceImpl;
-import by.epam.grodno.pronych.eshop.model.service.impl.UserServiceImpl;
+import by.epam.grodno.pronych.eshop.model.service.RoleService;
+import by.epam.grodno.pronych.eshop.model.service.UserService;
 import by.epam.grodno.pronych.eshop.security.jwt.JwtProvider;
 
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthRestApi {
-	@Autowired
-	AuthenticationManager authenticationManager;
+	private AuthenticationManager authenticationManager;
+	private UserService userService;
+	private RoleService roleService;
+	private PasswordEncoder encoder;
+	private JwtProvider jwtProvider;
 
 	@Autowired
-	UserServiceImpl userService;
-
-	@Autowired
-	RoleServiceImpl roleService;
-
-	@Autowired
-	PasswordEncoder encoder;
-
-	@Autowired
-	JwtProvider jwtProvider;
+	AuthRestApi(AuthenticationManager authenticationManager, UserService userService, RoleService roleService,
+			PasswordEncoder encoder, JwtProvider jwtProvider) {
+		this.authenticationManager = authenticationManager;
+		this.userService = userService;
+		this.roleService = roleService;
+		this.encoder = encoder;
+		this.jwtProvider = jwtProvider;
+	}
 
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@RequestBody LoginFormDto loginRequest) {
@@ -52,24 +53,13 @@ public class AuthRestApi {
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-		
+
 		String jwt = jwtProvider.generateJwtToken(authentication);
 		return ResponseEntity.ok(new JwtResponseDto(jwt));
 	}
-	
-	@RequestMapping("/test")
-	public ResponseEntity<String> testUser(@RequestBody SignUpFormDto signUpRequest) {
-		return ResponseEntity.ok().body("User registered successfully!");
-	}
-	
+
 	@PostMapping("/signup")
 	public ResponseEntity<String> registerUser(@RequestBody SignUpFormDto signUpRequest) {
-
-		/*
-		 * if(userDao.existsByUsername(signUpRequest.getUsername())) { return new
-		 * ResponseEntity<String>("Fail -> Username is already taken!",
-		 * HttpStatus.BAD_REQUEST); }
-		 */
 
 		// Creating user's account
 		User user = new User(signUpRequest.getName(), signUpRequest.getUsername(), signUpRequest.getEmail(),
@@ -80,9 +70,9 @@ public class AuthRestApi {
 		if (strRoles == null) {
 			strRoles = new HashSet<>();
 			strRoles.add("ROLE_USER");
-		};
+		}
+		;
 		for (String role : strRoles) {
-			//System.out.println(role);
 
 			switch (role) {
 			case "ROLE_ADMIN":

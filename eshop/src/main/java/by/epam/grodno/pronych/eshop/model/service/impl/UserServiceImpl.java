@@ -12,86 +12,94 @@ import by.epam.grodno.pronych.eshop.model.dao.UserDao;
 import by.epam.grodno.pronych.eshop.model.dto.UserDto;
 import by.epam.grodno.pronych.eshop.model.entity.Role;
 import by.epam.grodno.pronych.eshop.model.entity.User;
+import by.epam.grodno.pronych.eshop.model.service.OrderService;
+import by.epam.grodno.pronych.eshop.model.service.RoleService;
+import by.epam.grodno.pronych.eshop.model.service.UserService;
 
 @Service("userService")
-@Transactional(readOnly=true)
-public class UserServiceImpl {
+@Transactional(readOnly = true)
+public class UserServiceImpl implements UserService {
 	private final UserDao dao;
-	private final RoleServiceImpl roleService;
-	private final OrderServiceImpl orderService;
-	
+	private final RoleService roleService;
+	private OrderService orderService;
+
 	@Autowired
-	public UserServiceImpl(UserDao dao, RoleServiceImpl roleService, OrderServiceImpl orderService) {
+	public UserServiceImpl(UserDao dao, RoleService roleService) {
 		this.dao = dao;
 		this.roleService = roleService;
+		// this.orderService = orderService;
+	}
+
+	public void setBeanOrderService(OrderService orderService) {
 		this.orderService = orderService;
 	}
-	
-    @Transactional
+
+	@Transactional
 	public void save(User user) {
-        dao.save(user);
-    }
-	
-    @Transactional
+		dao.save(user);
+	}
+
+	@Transactional
 	public void update(User user) {
-        dao.update(user);
-    }
-    
-    @Transactional
-    public void delete(int id) {
-        dao.delete(id);
-    }
+		dao.update(user);
+	}
 
-    public User getById(int id) {
+	@Transactional
+	public void delete(int id) {
+		dao.delete(id);
+	}
+
+	public User getById(int id) {
 		User user = dao.getById(id);
-        return user;
-    }
-    
-    public User getByName(String name) {
+		return user;
+	}
+
+	public User getByName(String name) {
 		User user = dao.getByName(name);
-        return user;
-    }
-    
-    public User getByUserName(String userName) {
+		return user;
+	}
+
+	public UserDto getByUserName(String userName) {
 		User user = dao.getByUserName(userName);
-        return user;
-    }
-    
-    public List<User> getAll() {
-    	return dao.getAll();
-    }
-    
-    public List<UserDto> getAllDebts() {
-    	return orderService.getAllDebts();
-    }
+		UserDto userDto = new UserDto(user);
+		userDto.setAdmin(isUserAdmin(user));
+		return userDto;
+	}
 
-    public boolean isUserAdmin(User user) {
-    	//RoleName roleName = RoleName.ROLE_ADMIN;//.valueOf(enumType, name)
-    	Role role = roleService.getByName("ROLE_ADMIN");
-    	//Role role = roleService.getByName(RoleName.ROLE_ADMIN);
-    	Set<Role> roles = user.getRoles();
-    	return roles.contains(role);//user.getRoles().contains(role);
-    }
+	public List<User> getAll() {
+		return dao.getAll();
+	}
 
-    @Transactional
+	public List<UserDto> getAllUserDebts() {
+		return orderService.getAllUserDebts();
+	}
+
+	public boolean isUserAdmin(User user) {
+		// RoleName roleName = RoleName.ROLE_ADMIN;//.valueOf(enumType, name)
+		Role role = roleService.getByName("ROLE_ADMIN");
+		// Role role = roleService.getByName(RoleName.ROLE_ADMIN);
+		Set<Role> roles = user.getRoles();
+		return roles.contains(role);// user.getRoles().contains(role);
+	}
+
+	@Transactional
 	public void setToBlackList(UserDto userMsg) {
-		User user = getById((int)userMsg.getId());
+		User user = getById((int) userMsg.getId());
 		user.setInBlackList(true);
-		user.setName("test15");
 		update(user);
 	}
 
-    @Transactional
+	@Transactional
 	public void removeFromBlackList(UserDto userMsg) {
-		User user = getById((int)userMsg.getId());
+		User user = getById((int) userMsg.getId());
 		user.setInBlackList(false);
 		update(user);
-		
+
 	}
 
 	public boolean isUserInBlackList(UserDto userMsg) {
-		User user = getById((int)userMsg.getId());
+		User user = getById((int) userMsg.getId());
 		return user.isInBlackList();
 	}
-    
+
 }
